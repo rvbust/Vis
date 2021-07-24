@@ -138,7 +138,7 @@ struct View {
     void WindowGetRectangle(int &x, int &y, int &width, int &height);
 
     /**
-     * Raiw the window to the top
+     * Raise the window to the top
      */
     void WindowRaise();
 

@@ -47,7 +47,7 @@ PYBIND11_MODULE(PyVis, m) {
 
     py::class_<Handle>(m, "Handle")
         .def(py::init<>())
-        .def(py::init<uint64_t, uint64_t>(), "t"_a, "u"_a)
+        .def(py::init<uint64_t, uint64_t>(), "type"_a, "uid"_a)
         .def("Copy", [](const Handle &self) { return Handle(self.type, self.uid); })
         .def_readwrite("type", &Handle::type)
         .def_readwrite("uid", &Handle::uid)
@@ -57,7 +57,8 @@ PYBIND11_MODULE(PyVis, m) {
     py::class_<ViewConfig>(m, "ViewConfig")
         .def(py::init<>())
         .def(
-            py::init<const std::string &, int, int, int, int, const std::array<float, 4> &, bool>())
+            py::init<const std::string &, int, int, int, int, const std::array<float, 4> &, bool>(),
+            "name"_a, "x"_a, "y"_a, "width"_a, "height"_a, "bgcolor"_a, "use_decoration"_a = true)
         .def("Copy",
              [](const ViewConfig &self) {
                  return ViewConfig(self.name, self.x, self.y, self.width, self.height, self.bgcolor,
@@ -81,9 +82,8 @@ PYBIND11_MODULE(PyVis, m) {
         });
 
     py::class_<View>(m, "View")
-        .def(py::init<const std::string &, bool>(), py::arg("name") = "Vis",
-             py::arg("shared") = true)
-        .def(py::init<const ViewConfig &, bool>())
+        .def(py::init<const std::string &, bool>(), "name"_a = "Vis", "shared"_a=true)
+        .def(py::init<const ViewConfig &, bool>(), "cfg"_a, "shared"_a=true)
         .def("GetViewSize",
              [](View &v) {
                  int width = 0, height = 0;
@@ -91,17 +91,17 @@ PYBIND11_MODULE(PyVis, m) {
                  return std::make_tuple(width, height);
              },
              "Get View window size.")
-        .def("WindowSetDecoration", &View::WindowSetDecoration)
-        .def("WindowSetRectangle", &View::WindowSetRectangle)
+        .def("WindowSetDecoration", &View::WindowSetDecoration, "enable"_a)
+        .def("WindowSetRectangle", &View::WindowSetRectangle, "x"_a, "y"_a, "width"_a, "height"_a)
         .def("WindowGetRectangle",
              [](View &v) {
                  std::array<int, 4> r;
                  v.WindowGetRectangle(r[0], r[1], r[2], r[3]);
                  return r;
              })
-        .def("WindowRaise", &View::WindowRaise)
-        .def("WindowHide", &View::WindowHide)
-        .def("WindowShow", &View::WindowShow)
+        .def("WindowRaise", &View::WindowRaise, "Raise the window to the top")
+        .def("WindowHide", &View::WindowHide, "Hide the window.Return the rectangle of the window.")
+        .def("WindowShow", &View::WindowShow, "rectangle"_a, "Show the at certain position with certain size.")
 
         .def("SetIntersectorMode", &View::SetIntersectorMode,
              "Set intersector mode for picking in scene\n"
