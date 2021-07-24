@@ -199,12 +199,12 @@ The following is a simple case of using Vis, a box of a given size is displayed 
 from RVBUST import Vis
 from IPython import embed
 
-# 在Vis窗口中展示给定尺寸的box
+# Show box in Vis
 def ShowBox():
     transparent_box = v.Box([-2, 0, 0], [0.5, 0.5, 0.5], [1, 0, 0, 0.5])
     normal_box = v.Box([0, 2, 0], [0.5, 0.5, 0.5], [1, 0, 0])
 
-# 移动box
+# Move box with Gizmo
 def MoveBox():
     transparent_box = v.Box([-2, 0, 0], [0.5, 0.5, 0.5], [1, 0, 0, 0.5])
     v.EnableGizmo(transparent_box, 4)
