@@ -76,26 +76,24 @@ python3 Setup.py install
 1. Sharing the same scene from different Views.
 
 ```python
+# Sharing the scene means above two views are adding boxes in the same scene
 from RVBUST import Vis 
-v1 = Vis.View("Shared", shared = True) #< shared means sharing the scene or not.
-v2 = Vis.View("Shared", shared = True) #< shared means sharing the scene or not.
+v1 = Vis.View("View1", shared = True) #< shared means sharing the scene or not.
+v2 = Vis.View("View2", shared = True)
 
 v1.Box((0,0,0), (1,1,1))
 v2.Box((2,2,2), (1,1,1))
-
-# sharing the scene means above two views are adding boxes in the same scene
 ```
 
 2.  Not sharing the scene
 
 ```python
-v1 = Vis.View("Shared", shared = False) 
-v2 = Vis.View("Shared", shared = False) 
+# Below two views are adding boxes into different scenes
+v1 = Vis.View("View1", shared = False) #< shared means sharing the scene or not.
+v2 = Vis.View("View2", shared = False) 
 
 v1.Box((0,0,0), (1,1,1))
 v2.Box((2,2,2), (1,1,1))
-
-# above two views are adding boxes into different scenes
 ```
 
 Inside Vis, there's only one shared scene. So if you turn on sharing all scene will be added into the same one.
@@ -104,20 +102,22 @@ If you create a view without sharing the scene, it will be the only view that co
 
 #### Plot Geometrics Objects
 
-| Name     | Description                                                                                                                                           | image                                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Name     | Description                                                                                                                                            | image                                            |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
 | Axes     | Plot an Axes with translations and quaternions and set asis len and axis size. The unit of axis length is meters, and the unit of dimension is pixels. | <img src=./Data/Images/Axes.png width="100">     |
-| Point    | Plot point or points. Every 3 values is point position.The unit of size is pixels.                                                                    | <img src=./Data/Images/Point.png width="100">    |
-| Line     | Plot line or lines. lines.size() = line_num \* 6. Every 6 values is two end points of a line.                                                         | <img src=./Data/Images/Line.png width="100">     |
-| Box      | Plot a box with center position and extents.                                                                                                          | <img src=./Data/Images/Box.png width="100">      |
-| Sphere   | Plot a sphere with center position and radius.                                                                                                        | <img src=./Data/Images/Sphere.png width="100">   |
-| Cone     | Plot a cone with center, radius and hight.                                                                                                            | <img src=./Data/Images/Cone.png width="100">     |
-| Cylinder | Plot a cylinder with center position, radius and height.                                                                                              | <img src=./Data/Images/Cylinder.png width="100"> |
+| Point    | Plot point or points. Every 3 values is point position.The unit of size is pixels.                                                                     | <img src=./Data/Images/Point.png width="100">    |
+| Line     | Plot line or lines. lines.size() = line_num \* 6. Every 6 values is two end points of a line.                                                          | <img src=./Data/Images/Line.png width="100">     |
+| Box      | Plot a box with center position and extents.                                                                                                           | <img src=./Data/Images/Box.png width="100">      |
+| Sphere   | Plot a sphere with center position and radius.                                                                                                         | <img src=./Data/Images/Sphere.png width="100">   |
+| Cone     | Plot a cone with center, radius and hight.                                                                                                             | <img src=./Data/Images/Cone.png width="100">     |
+| Cylinder | Plot a cylinder with center position, radius and height.                                                                                               | <img src=./Data/Images/Cylinder.png width="100"> |
 | Arrow    | Plot an arrow with tail position, head position and radius.                                                                                            | <img src=./Data/Images/Arrow.png width="100">    |
-| Mesh     | Plot a mesh with vertics and indices.                                                                                                                 | <img src=./Data/Images/Mesh.png width="100">     |
-| Plane    | Plot a plane.                                                                                                                                         | <img src=./Data/Images/Plane.png width="100">    |
+| Mesh     | Plot a mesh with vertics and indices.                                                                                                                  | <img src=./Data/Images/Mesh.png width="100">     |
+| Plane    | Plot a plane.                                                                                                                                          | <img src=./Data/Images/Plane.png width="100">    |
 
-#### Importer
+It should be noted that the units used in Vis are all SI units, that is, the length is meters (m), and the angle units are radians (rad). In addition, for orientation, Vis uses quaternion, in the form of (ox, oy, oz, ow), the real part is the last element.
+
+#### Load Model
 Vis supports common 3D model file formats, such as STL, DAE, 3DS, etc.
 Vis does not currently support exporting model files.
 
@@ -145,7 +145,7 @@ v.SetInterSectMode(IntersectorMode_Polytope)
 <img src=./Data/Images/IntersectorModePolytope.gif width="500">
 
 - IntersectorMode_LineSegment
-> In IntersectorModeLineSegment mode, you can select points on the surface of the object by ctrl+left-click and draw the axes.
+> In IntersectorMode_LineSegment mode, you can select points on the surface of the object by ctrl+left-click and draw the axes.
 ```python
 v.SetInterSectMode(IntersectorMode_LineSegment)
 hs=v.GetPickedPointAxes()
@@ -190,6 +190,48 @@ Vis can set different log levels to view the corresponding information. The log 
 # at any time:
 Vis.SetLogLevel("debug")
 ```
+
+#### Use Case
+
+The following is a simple case of using Vis, a box of a given size is displayed in the Vis window, and the user can move the box in the window.
+
+```
+from RVBUST import Vis
+from IPython import embed
+
+# 在Vis窗口中展示给定尺寸的box
+def ShowBox():
+    transparent_box = v.Box([-2, 0, 0], [0.5, 0.5, 0.5], [1, 0, 0, 0.5])
+    normal_box = v.Box([0, 2, 0], [0.5, 0.5, 0.5], [1, 0, 0])
+
+# 移动box
+def MoveBox():
+    transparent_box = v.Box([-2, 0, 0], [0.5, 0.5, 0.5], [1, 0, 0, 0.5])
+    v.EnableGizmo(transparent_box, 4)
+    v.SetGizmoDisplayScale(2)
+
+def Basic():
+    Vis.SetLogLevel("debug")
+    axes1 = v.Axes([0, 0, 0], [0, 0, 0, 1], 2, 1)
+    ShowBox()
+    MoveBox()
+    pass
+
+if __name__ == "__main__":
+    cfg = Vis.ViewConfig()
+    cfg.x = 0
+    cfg.y = 40
+    cfg.width = 800
+    cfg.height = 600
+    cfg.name = "Basics"
+    v = Vis.View(cfg, False)
+    Basic()
+    v.Home()
+    from IPython.terminal import embed
+    ipshell=embed.InteractiveShellEmbed(config=embed.load_default_config())(local_ns=locals())
+```
+
+<img src=./Data/Images/move_box.gif width="700">
 
 ## License
 
