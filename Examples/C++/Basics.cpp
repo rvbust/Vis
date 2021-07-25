@@ -7,7 +7,7 @@ static inline void Sleep(uint64_t ms) {
 }
 
 int main(int argc, char *argv[]) {
-    auto v = Vis::View("Basics");
+    Vis::View v("Basics");
     v.Ground(20, 0.1, {1, 0, 0});
     v.Box({0, 0, 1}, {1, 1, 1}, {0, 1, 0});
     Sleep(10000);
