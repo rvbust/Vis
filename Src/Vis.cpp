@@ -3700,13 +3700,15 @@ bool Vis3d_Command_ClearNodes(Vis3d *pv3, Command *pc) {
 
 void Vis3d_Command_CloseView(Vis3d *pv3, Command *pc) {
     const Handle who = pc->who;
-    if (!Vis3d__HasView(pv3, who)) {
-        VIS_ERROR("Can not find view: type: {0}, uid: {1}.", who.type, who.uid);
-        pc->success = false;
-    } else {
-        pv3->compviewer->removeView(pv3->viewmap[who]);
-        pv3->viewmap.erase(who);
-        pc->success = true;
+    if (!pv3->viewmap.empty()) {
+        if (!Vis3d__HasView(pv3, who)) {
+            VIS_ERROR("Can not find view: type: {0}, uid: {1}.", who.type, who.uid);
+            pc->success = false;
+        } else {
+            pv3->compviewer->removeView(pv3->viewmap[who]);
+            pv3->viewmap.erase(who);
+            pc->success = true;
+        }
     }
 }
 
