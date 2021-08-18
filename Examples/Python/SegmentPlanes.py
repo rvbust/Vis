@@ -41,6 +41,7 @@ def SegmentPlaneDemo():
         
         plane_pts = np.array(segments[i].points)
         v.Point(plane_pts, 3, RandColor())
+        from IPython.terminal import embed; ipshell=embed.InteractiveShellEmbed(config=embed.load_default_config())(local_ns=locals())
         time.sleep(0.3)
         
     from IPython.terminal import embed; ipshell=embed.InteractiveShellEmbed(config=embed.load_default_config())(local_ns=locals())

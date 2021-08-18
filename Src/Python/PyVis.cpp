@@ -1,6 +1,6 @@
 /***********************************************************************
  **
- ** Copyright (c) 2012-2021 Scott Chacon and others
+ ** Copyright (c) 2012-2021 RVBUST Inc.
  **
  ** Permission is hereby granted, free of charge, to any person obtaining
  ** a copy of this software and associated documentation files (the
@@ -82,8 +82,8 @@ PYBIND11_MODULE(PyVis, m) {
         });
 
     py::class_<View>(m, "View")
-        .def(py::init<const std::string &, bool>(), "name"_a = "Vis", "shared"_a=true)
-        .def(py::init<const ViewConfig &, bool>(), "cfg"_a, "shared"_a=true)
+        .def(py::init<const std::string &, bool>(), "name"_a = "Vis", "shared"_a = true)
+        .def(py::init<const ViewConfig &, bool>(), "cfg"_a, "shared"_a = true)
         .def("GetViewSize",
              [](View &v) {
                  int width = 0, height = 0;
@@ -101,7 +101,8 @@ PYBIND11_MODULE(PyVis, m) {
              })
         .def("WindowRaise", &View::WindowRaise, "Raise the window to the top")
         .def("WindowHide", &View::WindowHide, "Hide the window.Return the rectangle of the window.")
-        .def("WindowShow", &View::WindowShow, "rectangle"_a, "Show the at certain position with certain size.")
+        .def("WindowShow", &View::WindowShow, "rectangle"_a,
+             "Show the at certain position with certain size.")
 
         .def("SetIntersectorMode", &View::SetIntersectorMode,
              "Set intersector mode for picking in scene\n"

@@ -1,4 +1,3 @@
-
 #include <osgGA/MultiTouchTrackballManipulator>
 
 class TouchballManipulator : public osgGA::MultiTouchTrackballManipulator {
