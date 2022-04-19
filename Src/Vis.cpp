@@ -63,6 +63,7 @@
 #include <osgGA/TrackballManipulator>
 #include <osgUtil/ShaderGen>
 #include <osgUtil/SmoothingVisitor>
+#include <osgUtil/TriStripVisitor>
 #include <osgViewer/CompositeViewer>
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
@@ -4755,7 +4756,6 @@ void Vis3d_Command_PlotMesh(Vis3d *pv3, Command *pc) {
     geom->setColorArray(cs.get());
     geom->setColorBinding(numcl == 1 ? osg::Geometry::BIND_OVERALL
                                      : osg::Geometry::BIND_PER_VERTEX);
-    osgUtil::SmoothingVisitor::smooth(*geom);
 
     osg::ref_ptr<osg::MatrixTransform> mt{new osg::MatrixTransform};
     osg::ref_ptr<osg::Geode> geode_mesh{new osg::Geode()};
@@ -4767,6 +4767,13 @@ void Vis3d_Command_PlotMesh(Vis3d *pv3, Command *pc) {
 
     geode_mesh->addDrawable(geom.get());
     mt->addChild(geode_mesh);
+
+    osgUtil::SmoothingVisitor smoother;
+    // When outlining extruded polygons, only draw a post outline if the angle between the adjoining
+    // faces exceeds this value. This has the effect of only outlining corners that are sufficiently
+    // “sharp”.
+    smoother.setCreaseAngle(osg::PI * 0.5);
+    smoother.apply(*geode_mesh);
 
     h.type = ViewObjectType_Mesh;
     h.uid = NextHandleID(pv3);
