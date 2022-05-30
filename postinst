@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+
+if [ $1 = configure ]; then
+    userhome=/home/rvbust
+    echo "setting PYTHONPATH ..."
+    if [ -e $userhome/.bashrc ]; then
+        if [[ ! -z $(cat $userhome/.bashrc | grep /opt/RVBUST/Vis/Python) ]]; then
+            echo "PYTHONPATH has been set!"
+        else
+            echo "export PYTHONPATH=\$PYTHONPATH:/opt/RVBUST/Vis/Python" >>$userhome/.bashrc
+        fi
+    fi
+    if [ -e $userhome/.zshrc ]; then
+        if [[ ! -z $(cat $userhome/.zshrc | grep /opt/RVBUST/Vis/Python) ]]; then
+            echo "PYTHONPATH has been set!"
+        else
+            echo "export PYTHONPATH=\$PYTHONPATH:/opt/RVBUST/Vis/Python" >>$userhome/.zshrc
+        fi
+    fi
+    echo "Set PYTHONPATH successfully!"
+fi
