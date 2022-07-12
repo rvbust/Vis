@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
+project(Vis VERSION 0.0.1)
 
 
 set(CMAKE_BUILD_TYPE "Release")
@@ -21,8 +22,6 @@ else(WIN32)
   find_package(osg REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
   set(OSG_LIBS osg osgViewer osgGA osgText osgDB osgUtil osgFX)
 endif(WIN32)
-
-project(Vis VERSION 0.0.1)
 
 find_package(Threads REQUIRED)
 find_package(OpenGL REQUIRED)
