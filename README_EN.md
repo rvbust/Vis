@@ -140,14 +140,14 @@ Vis provides a variety of interactive APIs.
 - IntersectorMode_Polytope
 > In IntersectorMode_Polytope mode, you can click on an object in the scene and highlight the selected object.
 ```python
-v.SetInterSectMode(IntersectorMode_Polytope)
+v.SetIntersectorMode(IntersectorMode_Polytope)
 ```
 <img src=./Data/Images/IntersectorModePolytope.gif width="500">
 
 - IntersectorMode_LineSegment
 > In IntersectorMode_LineSegment mode, you can select points on the surface of the object by ctrl+left-click and draw the axes.
 ```python
-v.SetInterSectMode(IntersectorMode_LineSegment)
+v.SetIntersectorMode(IntersectorMode_LineSegment)
 hs=v.GetPickedPointAxes()
 ```
 <img src=./Data/Images/IntersectorModeLineSegment.gif width="500">
@@ -155,7 +155,7 @@ hs=v.GetPickedPointAxes()
 - IntersectorMode_Point
 > In IntersectorMode_Point mode, you can select a point in a set of points.
 ```python
-v.SetInterSectMode(IntersectorMode_Point)
+v.SetIntersectorMode(IntersectorMode_Point)
 hs=v.GetPickedPointAxes()
 ```
 <img src=./Data/Images/IntersectorModePoint.gif width="500">
@@ -163,7 +163,7 @@ hs=v.GetPickedPointAxes()
 - IntersectorMode_Line
 > In IntersectorMode_Line mode, you can select the line segment drawn with View.Line(...).
 ```python
-v.SetInterSectMode(IntersectorMode_Line)
+v.SetIntersectorMode(IntersectorMode_Line)
 ```
 <img src=./Data/Images/IntersectorModeLine.gif width="500">
 
