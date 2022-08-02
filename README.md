@@ -157,7 +157,7 @@ Vis提供多种交互工具。
 
 - IntersectorMode_Polytope
 
-> 在 IntersectorMode_Polytope 模式，可以通过左键点击场景的物体，并高亮显示选中的物体。(能选择点和线段，但是不能获取到选中点的坐标)
+> 在 IntersectorMode_Polytope 模式，可以通过右键点击场景的物体，并高亮显示选中的物体。(能选择点和线段，但是不能获取到选中点的坐标)
 
 ```python
 v.SetIntersectorMode(IntersectorMode_Polytope)
@@ -168,7 +168,7 @@ picked_object_handle = v.Picked()
 
 - IntersectorMode_LineSegment
 
-> 在 IntersectorMode_LineSegment 模式下，可以通过左键点击场景的物体，并高亮显示选中的物体(不能选择点和线段, 可以获取到选中点的坐标)。还可以通过 Ctrl + 左键点击选择多个物体表面的点，并绘制坐标系。
+> 在 IntersectorMode_LineSegment 模式下，可以通过右键点击场景的物体，并高亮显示选中的物体(不能选择点和线段, 可以获取到选中点的坐标)。还可以通过 Ctrl + 右键点击选择多个物体表面的点，并绘制坐标系。
 
 ```python
 v.SetIntersectorMode(IntersectorMode_LineSegment)
@@ -182,7 +182,7 @@ hs = v.MultiPicked()
 
 - IntersectorMode_Point
 
-> 在 IntersectorMode_Point 模式下，可以通过左键点击在一组点中选择一个点，并在选中的点的位置绘制坐标系。还可以通过 Ctrl + 左键点击选择多个点，并绘制坐标系。
+> 在 IntersectorMode_Point 模式下，可以通过右键点击在一组点中选择一个点，并在选中的点的位置绘制坐标系。还可以通过 Ctrl + 右键点击选择多个点，并绘制坐标系。
 
 ```python
 v.SetIntersectorMode(IntersectorMode_Point)
@@ -196,7 +196,7 @@ hs = v.MultiPicked()
 
 - IntersectorMode_Line
 
-> 在 IntersectorMode_Line 模式下，可以选中用 View.Line 绘制的线段和 View.Axes 绘制的坐标系，选中的线段会变成高亮。还可以通过 Ctrl + 左键点击选择多条线段。
+> 在 IntersectorMode_Line 模式下，可以选中用 View.Line 绘制的线段和 View.Axes 绘制的坐标系，选中的线段会变成高亮。还可以通过 Ctrl + 右键点击选择多条线段。
 
 ```python
 v.SetIntersectorMode(IntersectorMode_Line)
