@@ -587,7 +587,7 @@ public:
         }
 
         if (ea.getEventType() == osgGA::GUIEventAdapter::RELEASE &&
-            ea.getButton() == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON) {
+            ea.getButton() == osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) {
             if (m_pv3->insector_mode != Vis::IntersectorMode_Disable) {
                 osgViewer::View *view = dynamic_cast<osgViewer::View *>(&aa);
                 if (view) {
