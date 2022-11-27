@@ -28,6 +28,20 @@ Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应
 
 - #### Linux
 
+- If you are on Ubuntu 22.04 
+
+```shell
+sudo apt-get install libopenscenegraph-dev libpython3-dev python3-pip
+pip3 install ipython 
+
+mkdir build && cd build && cmake .. && sudo make -j install 
+
+# test 
+ipython 
+>>> from RVBUST import Vis 
+>>> v.Box([0,0,0], [1,1,1])
+```
+
 
 ```shell
   # 安装必要的依赖项

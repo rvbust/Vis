@@ -4773,7 +4773,8 @@ void Vis3d_Command_PlotMesh(Vis3d *pv3, Command *pc) {
     // faces exceeds this value. This has the effect of only outlining corners that are sufficiently
     // “sharp”.
     smoother.setCreaseAngle(osg::PI * 0.5);
-    smoother.apply(*geode_mesh);
+    osg::Geometry *geom_tmp = dynamic_cast<osg::Geometry *>(geode_mesh.get());
+    smoother.apply(*geom_tmp);
 
     h.type = ViewObjectType_Mesh;
     h.uid = NextHandleID(pv3);

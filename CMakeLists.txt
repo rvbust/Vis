@@ -23,6 +23,10 @@ else(WIN32)
   set(OSG_LIBS osg osgViewer osgGA osgText osgDB osgUtil osgFX)
 endif(WIN32)
 
+
+# Use new policy for `FindOpenGL` to prefer GLVND by default when available on linux (use `cmake --help-policy CMP0072` for details).
+cmake_policy(SET CMP0072 NEW)
+
 find_package(Threads REQUIRED)
 find_package(OpenGL REQUIRED)
 
