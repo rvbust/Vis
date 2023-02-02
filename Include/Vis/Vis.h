@@ -349,7 +349,7 @@ struct View {
     std::vector<Handle> Load(const std::vector<std::string> &fnames,
                              const std::vector<std::array<float, 3>> &trans,
                              const std::vector<std::array<float, 4>> &quats);
-
+    
     /**
      * @brief Set 2D Text on Screen
      *
@@ -363,7 +363,7 @@ struct View {
      * @return false
      */
     bool SetText(Handle &h, const std::string &content, const std::vector<float> &pos,
-                 float font_size = 0.0f, const std::vector<float> &colors = {});
+                 float font_size = 0.02f, const std::vector<float> &colors = {0.f, 0.f, 0.f});
 
     /**
      * @brief Set 2D Text Font
@@ -387,6 +387,9 @@ struct View {
      */
     Handle Quad2D(const std::vector<float> &xys, const std::vector<float> &color = {1.0f, 0, 0},
                   int mode = 0);
+    
+    Handle Text(const std::string &content, const std::vector<float> &pos, float font_size = 0.02f, const std::vector<float> &colors = {0.f, 0.f, 0.f});
+
     Handle Point(const std::vector<float> &xyzs, float ptsize = 1.0f,
                  const std::vector<float> &colors = {1.f, 0.f, 0.f});
 

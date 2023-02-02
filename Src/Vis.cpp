@@ -1951,6 +1951,20 @@ Handle View::Quad2D(const std::vector<float> &xys, const ::std::vector<float> &c
     return Handle();
 }
 
+Handle View::Text(const std::string &content, const std::vector<float> &pos, float font_size, const std::vector<float> &colors)
+{
+    Handle h;
+    if(SetText(h, content, pos, font_size, colors))
+    {
+        return h;
+    }
+    else
+    {
+        return Handle();
+    }
+    
+}
+
 Handle View::Point(const std::vector<float> &xyzs, float ptsize, const std::vector<float> &colors) {
     Handle h;
     const size_t xyzs_size = (int)xyzs.size();

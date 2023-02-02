@@ -15,9 +15,9 @@ Before compiling Vis, please make sure that the necessary dependencies have been
 ```shell
 sudo apt-get install build-essential python3-dev cmake git libopenscenegraph-3.4-dev 
 ```
-If the `libopenscenegraph-3.4-dev` is not available on your platform, an alternative is the default `libopenscenegraph-dev` supplied by your software mananger.
+If the `libopenscenegraph-3.4-dev` is not available on your platform, please build from source:
 ```shell
-sudo apt install libopenscenegraph-dev
+wget https://github.com/openscenegraph/OpenSceneGraph/archive/refs/tags/OpenSceneGraph-3.4.1.tar.gz
 ```
 
 Clone the repo.

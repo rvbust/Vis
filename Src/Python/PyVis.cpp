@@ -195,11 +195,15 @@ PYBIND11_MODULE(PyVis, m) {
                  return self.Clone(handles, poss, quats);
              },
              "handles"_a, "poss"_a, "quats"_a, "Clone list of unchained object with poss and quats")
-        .def("SetText", &View::SetText, "handle"_a, "content"_a, "pos"_a, "font_size"_a = 0.0f,
-             "colors"_a = std::vector<float>{}, "Plot Text.")
+        .def("SetText", &View::SetText, "handle"_a, "content"_a, "pos"_a, "font_size"_a = 0.02f,
+             "colors"_a = std::vector<float>{0.f, 0.f, 0.f}, "Plot Text.")
         .def("SetTextFont", &View::SetTextFont, "font_name"_a, "Set Text Font.")
         .def("Quad2D", &View::Quad2D, "xys"_a, "colors"_a = std::vector<float>{1.f, 0, 0},
              "mode"_a = 0, "Plot a 2D quad with vertex in secreen position.")
+        .def(
+            "Text", &View::Text, "content"_a, "pos"_a, "font_size"_a=0.02f,
+            "colors"_a = std::vector<float>{0.f, 0.f, 0.f},
+            "Plot 3d or 2d text.")
         .def(
             "Point", &View::Point, "xyzs"_a, "ptsize"_a = 1.0f,
             "colors"_a = std::vector<float>{1.f, 0, 0},

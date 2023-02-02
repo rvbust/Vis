@@ -35,8 +35,9 @@ Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应
   
   # 安装libopenscenegraph
   sudo apt install libopenscenegraph-3.4-dev
-  # 如果找不到以上版本，可以安装默认版本
-  sudo apt install libopenscenegraph-dev
+  # 如果找不到以上版本，请到下载源码编译
+  wget https://github.com/openscenegraph/OpenSceneGraph/archive/refs/tags/OpenSceneGraph-3.4.1.tar.gz
+  # 下载后安装官方说明编译安装
   
   # 下载Vis源码
   git clone https://github.com/rvbust/Vis.git

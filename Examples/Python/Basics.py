@@ -71,26 +71,20 @@ def ShowPlane():
 
 def Show2DText():
     b = v.SetTextFont("SourceCodePro-Regular.ttf")
-    t1 = Vis.Handle()
-    v.SetText(t1, "测试2DText1", [100, 100])
+    t1 = v.Text("测试2DText1", [100, 100])
 
-    t2 = Vis.Handle()
-    v.SetText(t2, "测试2DText2", [200, 200], 0, [1, 0, 0.5])
+    t2 = v.Text("测试2DText2", [100, 100], 0, [1, 0, 0.5])
 
-    t3 = Vis.Handle()
-    v.SetText(t3, "测试2DText3", [300, 300], 10, [])
+    t3 = v.Text("测试2DText3", [300, 300], 10, [])
 
 
 def Show3DText():
     b = v.SetTextFont("SourceCodePro-Regular.ttf")
-    d1 = Vis.Handle()
-    v.SetText(d1, "测试3DText1", [0, 4, 0], 0.1)
+    d1 = v.Text("测试3DText1", [0, 4, 0], 0.1)
 
-    d2 = Vis.Handle()
-    v.SetText(d2, "测试3DText2", [2, 0, 0], 0.2, [])
+    d2 = v.Text("测试3DText2", [2, 0, 0], 0.2, [])
 
-    d3 = Vis.Handle()
-    v.SetText(d3, "测试3DText3", [0, 0, 2], 0.3, [1, 0, 1, 0.5])
+    d2 = v.Text("测试3DText3", [0, 0, 2], 0.3, [1, 0, 1, 0.5])
 
 
 def ShowQuad2D():
