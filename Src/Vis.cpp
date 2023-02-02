@@ -83,7 +83,7 @@
 #include "Manipulator/TouchballManipulator.h"
 // #include "Utils.h"
 
-#define VIS_VERSION "1.1.0"
+#define VIS_VERSION "1.1.1"
 
 // #define VIS_LOGGER_SHORT 1
 #ifndef VIS_DISABLE_LOGGER
