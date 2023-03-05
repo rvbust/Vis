@@ -7,7 +7,6 @@
 </div>
 
 
-
 # Vis: Asynchronous 3D Visualization Tool
 
 Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应用开发更简单。
@@ -22,22 +21,17 @@ Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应
 
 - Gzimo
 
-  
-
 ## 安装
 
 - #### Linux
-
 
 ```shell
   # 安装必要的依赖项
   sudo apt-get install build-essential python3-dev cmake git
   
-  # 安装libopenscenegraph
-  sudo apt install libopenscenegraph-3.4-dev
-  # 如果找不到以上版本，请到下载源码编译
-  wget https://github.com/openscenegraph/OpenSceneGraph/archive/refs/tags/OpenSceneGraph-3.4.1.tar.gz
-  # 下载后安装官方说明编译安装
+  # 安装 libopenscenegraph (3.6.0 以上)
+  sudo apt install libopenscenegraph-dev
+  # 如果只能找到 3.4 的 OSG, 请使用 master 分支
   
   # 下载Vis源码
   git clone https://github.com/rvbust/Vis.git
@@ -53,14 +47,13 @@ Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应
 
 - #### Windows
 
-
   安装Vis之前，请确定已经安装OSG。
 
    ##### **安装OSG**
 
   1. 下载OSG安装包
 
-     OpenSceneGraph-3.4.1[点击下载](https://objexx.com/OpenSceneGraph/OpenSceneGraph-3.4.1-VC2017-64-Release.7z)
+     OpenSceneGraph-3.6.3[点击下载](https://objexx.com/OpenSceneGraph/OpenSceneGraph-3.6.3-VC2017-64-Release.7z)
 
   2. 解压文件和设置路径
 
@@ -68,7 +61,7 @@ Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应
      Add `OSG_BIN_DIR` to `path`
 
       ```shell
-      OSG_ROOT = C:\OpenSceneGraph-3.4.1-VC2017-64-Release
+      OSG_ROOT = C:\OpenSceneGraph-3.6.3-VC2017-64-Release
       OSG_BIN_DIR = %OSG_ROOT%\bin
       OSG_INCLUDE_DIR = %OSG_ROOT%\include
       OSG_LIB_DIR = %OSG_ROOT%\lib
@@ -81,8 +74,6 @@ Vis 是一款交互式异步3D可视化工具，旨在让3D视觉和机器人应
   ```shell
   python3 Setup.py install
   ```
-
-
 
 ## 功能说明
 

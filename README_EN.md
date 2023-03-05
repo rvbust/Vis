@@ -13,12 +13,14 @@ English | [简体中文](./README.md)
 Before compiling Vis, please make sure that the necessary dependencies have been installed. You can install the dependencies of Vis by following the instructions：
 
 ```shell
-sudo apt-get install build-essential python3-dev cmake git libopenscenegraph-3.4-dev 
+sudo apt-get install build-essential python3-dev cmake git
 ```
-If the `libopenscenegraph-3.4-dev` is not available on your platform, please build from source:
+
+Install libopenscenegraph [version >= 3.6.0]
 ```shell
-wget https://github.com/openscenegraph/OpenSceneGraph/archive/refs/tags/OpenSceneGraph-3.4.1.tar.gz
+sudo apt-get install libopenscenegraph-dev
 ```
+If the `libopenscenegraph-dev` is not available on your platform, but `libopenscenegraph-3.4-dev` is, please use the `master` branch:
 
 Clone the repo.
 ```shell
@@ -44,7 +46,7 @@ Before install Vis, please make sure OSG is installed.
 
 1. Download windows binary file
 
-   [Click to Download OpenSceneGraph-3.4.1](https://objexx.com/OpenSceneGraph/OpenSceneGraph-3.4.1-VC2017-64-Release.7z)
+   [Click to Download OpenSceneGraph-3.6.3](https://objexx.com/OpenSceneGraph/OpenSceneGraph-3.6.3-VC2017-64-Release.7z)
    
    Or you can compile OSG by yourself. 
 
@@ -54,14 +56,13 @@ Before install Vis, please make sure OSG is installed.
     Add `OSG_ROOT` to `path`
 
    ```shell
-    OSG_ROOT = C:\OpenSceneGraph-3.4.1-VC2017-64-Release
+    OSG_ROOT = C:\OpenSceneGraph-3.6.3-VC2017-64-Release
     OSG_BIN_DIR = %OSG_ROOT%\bin
     OSG_INCLUDE_DIR = %OSG_ROOT%\include
     OSG_LIB_DIR = %OSG_ROOT%\lib
    ```
 
 3. Reboot your system. 
-
 
 ##### Install Vis
 

@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(Vis VERSION 1.1.1)
-
+project(Vis VERSION 1.2.0)
 
 set(CMAKE_BUILD_TYPE "Release")
 # Use C++17
@@ -13,18 +12,21 @@ set(CMAKE_CXX_STANDARD ${DEFAULT_CXX_STANDARD} CACHE STRING "C++ standard (minim
 # Make the lib all -fPIC
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+find_package(Threads REQUIRED)
+
+# Set OpenGL_GL_PREFERENCE to LEGACY to silence warnings on cmake 3.11+
+set(OpenGL_GL_PREFERENCE LEGACY)
+find_package(OpenGL REQUIRED)
+
 if(WIN32)
-  find_package(OpenSceneGraph REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
+  find_package(OpenSceneGraph 3.6 REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
   set(OSG_INCLUDE_DIR ${OPENSCENEGRAPH_INCLUDE_DIRS})
   set(OSG_LIBS ${OPENSCENEGRAPH_LIBRARIES})
 else(WIN32)
-  # install OpenSceneGraph with sudo apt install libopenscenegraph-3.4-dev 
-  find_package(osg REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
+  # install OpenSceneGraph with `sudo apt install libopenscenegraph-dev`
+  find_package(osg 3.6 REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
   set(OSG_LIBS osg osgViewer osgGA osgText osgDB osgUtil osgFX)
 endif(WIN32)
-
-find_package(Threads REQUIRED)
-find_package(OpenGL REQUIRED)
 
 add_subdirectory(Externals)
 

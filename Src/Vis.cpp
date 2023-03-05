@@ -83,7 +83,7 @@
 #include "Manipulator/TouchballManipulator.h"
 // #include "Utils.h"
 
-#define VIS_VERSION "1.1.1"
+#define VIS_VERSION "1.2.0"
 
 // #define VIS_LOGGER_SHORT 1
 #ifndef VIS_DISABLE_LOGGER
@@ -4771,6 +4771,14 @@ void Vis3d_Command_PlotMesh(Vis3d *pv3, Command *pc) {
     geom->setColorBinding(numcl == 1 ? osg::Geometry::BIND_OVERALL
                                      : osg::Geometry::BIND_PER_VERTEX);
 
+
+    osgUtil::SmoothingVisitor smoother;
+    // When outlining extruded polygons, only draw a post outline if the angle between the adjoining
+    // faces exceeds this value. This has the effect of only outlining corners that are sufficiently
+    // “sharp”.
+    smoother.setCreaseAngle(osg::PI * 0.5);
+    smoother.apply(*geom);
+
     osg::ref_ptr<osg::MatrixTransform> mt{new osg::MatrixTransform};
     osg::ref_ptr<osg::Geode> geode_mesh{new osg::Geode()};
 
@@ -4781,13 +4789,6 @@ void Vis3d_Command_PlotMesh(Vis3d *pv3, Command *pc) {
 
     geode_mesh->addDrawable(geom.get());
     mt->addChild(geode_mesh);
-
-    osgUtil::SmoothingVisitor smoother;
-    // When outlining extruded polygons, only draw a post outline if the angle between the adjoining
-    // faces exceeds this value. This has the effect of only outlining corners that are sufficiently
-    // “sharp”.
-    smoother.setCreaseAngle(osg::PI * 0.5);
-    smoother.apply(*geode_mesh);
 
     h.type = ViewObjectType_Mesh;
     h.uid = NextHandleID(pv3);

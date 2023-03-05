@@ -66,7 +66,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name='PyVis',
-    version='1.1.1',
+    version='1.2.0',
     author='rvbust',
     author_email='hi@rvbust.com',
     description='RVBUST Vis Python SDK',
