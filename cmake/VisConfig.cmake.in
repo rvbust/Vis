@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(Threads)
+find_dependency(OpenGL)
+
+if(NOT TARGET Vis::Vis)
+    include("${CMAKE_CURRENT_LIST_DIR}/VisTargets.cmake")
+endif()
+
+check_required_components(Vis)
+

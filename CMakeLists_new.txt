@@ -1,0 +1,262 @@
+cmake_minimum_required(VERSION 3.14)
+project(Vis VERSION 2.0.0 LANGUAGES CXX)
+
+#============================================================================
+# Build Options
+#============================================================================
+
+option(VIS_BUILD_EXAMPLES "Build example applications" ON)
+option(VIS_BUILD_TESTS "Build unit tests" OFF)
+option(VIS_BUILD_PYTHON "Build Python bindings" ON)
+
+#============================================================================
+# C++ Standard
+#============================================================================
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Position independent code for shared libraries
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+#============================================================================
+# Build Type
+#============================================================================
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
+endif()
+
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+#============================================================================
+# Find Dependencies
+#============================================================================
+
+# OpenSceneGraph
+if(WIN32)
+    find_package(OpenSceneGraph REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
+    set(OSG_INCLUDE_DIR ${OPENSCENEGRAPH_INCLUDE_DIRS})
+    set(OSG_LIBS ${OPENSCENEGRAPH_LIBRARIES})
+else()
+    find_package(osg REQUIRED COMPONENTS osgViewer osgGA osgText osgDB osgUtil osgFX)
+    set(OSG_LIBS osg osgViewer osgGA osgText osgDB osgUtil osgFX)
+endif()
+
+find_package(Threads REQUIRED)
+find_package(OpenGL REQUIRED)
+
+# Add external dependencies
+add_subdirectory(Externals)
+
+#============================================================================
+# Output Directories
+#============================================================================
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+#============================================================================
+# Vis Library
+#============================================================================
+
+set(VIS_PUBLIC_HEADERS
+    Include/Vis/Export.h
+    Include/Vis/Types.h
+    Include/Vis/Handle.h
+    Include/Vis/View.h
+    Include/Vis/VisNew.h
+    # Keep old header for compatibility
+    Include/Vis/Vis.h
+)
+
+set(VIS_SOURCES
+    # Utils
+    Src/Utils/Logger.cpp
+    
+    # Core (headers only for now, implementation coming)
+    # Src/Core/SceneManager.cpp
+    # Src/Core/CommandQueue.cpp
+    
+    # Commands (implementation)
+    # Src/Commands/GeometryCommands.cpp
+    # Src/Commands/SceneCommands.cpp
+    
+    # Interaction
+    # Src/Interaction/PickerManager.cpp
+    # Src/Interaction/GizmoController.cpp
+    
+    # Backend
+    # Src/Backend/OSG/OSGBackend.cpp
+    
+    # Legacy implementation (keeping for compatibility during transition)
+    Src/Vis.cpp
+    Src/Manipulator/TouchballManipulator.cpp
+    Src/Intersector/LineIntersector.cpp
+    Src/Intersector/PointIntersector.cpp
+)
+
+# Create library
+add_library(Vis ${VIS_SOURCES})
+add_library(Vis::Vis ALIAS Vis)
+
+# Include directories
+target_include_directories(Vis
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include>
+        $<BUILD_INTERFACE:${OSG_INCLUDE_DIR}>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Src
+)
+
+# Link libraries
+target_link_libraries(Vis
+    PUBLIC
+        Threads::Threads
+        ${OSG_LIBS}
+        OpenGL::GL
+    PRIVATE
+        fmt::fmt
+        spdlog::spdlog
+        libgizmo::libgizmo
+)
+
+# Compile definitions
+target_compile_definitions(Vis
+    PRIVATE
+        VIS_EXPORTS
+        $<$<CONFIG:Debug>:VIS_DEBUG>
+)
+
+# Set properties
+set_target_properties(Vis PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+
+#============================================================================
+# Python Bindings
+#============================================================================
+
+if(VIS_BUILD_PYTHON)
+    pybind11_add_module(PyVis
+        Src/Python/PyVis.cpp
+    )
+    
+    target_link_libraries(PyVis PRIVATE Vis)
+    
+    set_target_properties(PyVis PROPERTIES
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH_USE_LINK_PATH TRUE
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/RVBUST/Vis"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/RVBUST/Vis"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+    )
+    
+    # Create __init__.py
+    file(WRITE "${CMAKE_BINARY_DIR}/python/RVBUST/__init__.py" "")
+    file(WRITE "${CMAKE_BINARY_DIR}/python/RVBUST/Vis/__init__.py"
+        "from .PyVis import *\n"
+    )
+endif()
+
+#============================================================================
+# Examples
+#============================================================================
+
+if(VIS_BUILD_EXAMPLES)
+    add_subdirectory(Examples)
+endif()
+
+#============================================================================
+# Tests
+#============================================================================
+
+if(VIS_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(Tests)
+endif()
+
+#============================================================================
+# Installation
+#============================================================================
+
+include(GNUInstallDirs)
+
+set(CMAKE_INSTALL_PREFIX "/opt/RVBUST" CACHE PATH "Install prefix" FORCE)
+
+# Install library
+install(TARGETS Vis
+    EXPORT VisTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install headers
+install(DIRECTORY Include/Vis
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install Python module
+if(VIS_BUILD_PYTHON)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/python/
+        DESTINATION Vis/Python
+        USE_SOURCE_PERMISSIONS
+    )
+endif()
+
+# Install CMake config files
+install(EXPORT VisTargets
+    FILE VisTargets.cmake
+    NAMESPACE Vis::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Vis
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/VisConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/VisConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/VisConfig.cmake"
+    @ONLY
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/VisConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/VisConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Vis
+)
+
+#============================================================================
+# CPack Configuration
+#============================================================================
+
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+set(CPACK_PACKAGE_VENDOR "RVBUST Inc.")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_CONTACT "support@rvbust.com")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Asynchronous 3D Visualization Library")
+
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RVBUST Inc.")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libopenscenegraph-3.4-dev")
+
+set(CPACK_GENERATOR "DEB;TGZ")
+set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/postinst")
+    set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_SOURCE_DIR}/postinst")
+endif()
+
+include(InstallRequiredSystemLibraries)
+include(CPack)
+
